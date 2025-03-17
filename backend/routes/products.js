@@ -3,7 +3,6 @@ const Product = require("../models/Product");
 
 const router = express.Router();
 
-// ✅ Get All Products
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find();
@@ -13,7 +12,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ Get Product by ID
 router.get("/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -24,7 +22,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// ✅ Add a New Product (Admin Only)
 router.post("/", async (req, res) => {
   try {
     const { name, description, price, category, imageUrl } = req.body;
