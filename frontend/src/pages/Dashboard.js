@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [heartRate, setHeartRate] = useState(null);
   const [moveMinutes, setMoveMinutes] = useState(null);
   const [heartPoints, setHeartPoints] = useState(null);
-  const [diagnosis, setDiagnosis] = useState("Loading AI diagnosis..."); // ✅ Store AI-powered diagnosis
+  const [diagnosis, setDiagnosis] = useState("Loading AI diagnosis..."); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Dashboard = () => {
       script.src = "https://accounts.google.com/gsi/client";
       script.async = true;
       script.defer = true;
-      script.onload = () => console.log("✅ Google Identity Services Loaded");
+      script.onload = () => console.log("Google Identity Services Loaded");
       document.body.appendChild(script);
     };
 
@@ -49,7 +49,7 @@ const Dashboard = () => {
   const fetchGoogleFitData = async () => {
     try {
       if (!window.google || !window.google.accounts) {
-        console.error("❌ Google API not loaded yet. Please try again.");
+        console.error(" Google API not loaded yet. Please try again.");
         return;
       }
 
@@ -58,9 +58,8 @@ const Dashboard = () => {
         scope: "https://www.googleapis.com/auth/fitness.activity.read https://www.googleapis.com/auth/fitness.heart_rate.read",
         callback: async (response) => {
           if (response.access_token) {
-            console.log("✅ Google Fit Access Token:", response.access_token);
+            console.log(" Google Fit Access Token:", response.access_token);
 
-            // 🔹 Fetch AI-Powered Health Data from Google Fit
             const fitRes = await fetch(
               "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
               {
@@ -76,7 +75,7 @@ const Dashboard = () => {
                     { dataTypeName: "com.google.active_minutes" },
                     { dataTypeName: "com.google.heart_minutes" }
                   ],
-                  bucketByTime: { durationMillis: 86400000 }, // Last 24 hours
+                  bucketByTime: { durationMillis: 86400000 }, 
                   startTimeMillis: Date.now() - 86400000,
                   endTimeMillis: Date.now(),
                 }),
@@ -84,7 +83,7 @@ const Dashboard = () => {
             );
 
             const fitData = await fitRes.json();
-            console.log("🔹 Full Google Fit Response:", JSON.stringify(fitData, null, 2));
+            console.log("Full Google Fit Response:", JSON.stringify(fitData, null, 2));
 
             const extractMetric = (dataType) => {
               return fitData?.bucket?.find(b =>
@@ -102,7 +101,6 @@ const Dashboard = () => {
             setMoveMinutes(aiMoveMinutes);
             setHeartPoints(aiHeartPoints);
 
-            // 🔹 Send Data to AI Diagnosis API
             const aiRes = await axios.post("http://localhost:5000/api/ai/diagnose", {
               steps: aiSteps,
               heartRate: aiHeartRate,
@@ -117,7 +115,7 @@ const Dashboard = () => {
 
       tokenClient.requestAccessToken();
     } catch (error) {
-      console.error("❌ Google Fit Fetch Error:", error);
+      console.error("Google Fit Fetch Error:", error);
     }
   };
 
