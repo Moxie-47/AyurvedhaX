@@ -9,7 +9,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // ✅ Load Google Identity Services Script
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://accounts.google.com/gsi/client";
@@ -21,10 +20,10 @@ const Login = () => {
       if (window.google) {
         window.google.accounts.id.initialize({
           client_id: clientId,
-          callback: handleGoogleResponse, // ✅ Set callback for handling login response
+          callback: handleGoogleResponse, 
         });
 
-        // ✅ Render Google Login Button
+    
         window.google.accounts.id.renderButton(
           document.getElementById("google-signin-button"),
           { theme: "outline", size: "large" }
@@ -33,7 +32,6 @@ const Login = () => {
     };
   }, []);
 
-  // 🔹 Handle Email/Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -45,11 +43,10 @@ const Login = () => {
     }
   };
 
-  // ✅ Handle Google Login Response
   const handleGoogleResponse = async (response) => {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/google-login", {
-        token: response.credential, // ✅ Send ID Token to backend
+        token: response.credential, 
       });
 
       localStorage.setItem("token", res.data.token);
@@ -70,7 +67,6 @@ const Login = () => {
 
       <h3>OR</h3>
 
-      {/* ✅ Google Sign-In Button (Auto-rendered) */}
       <div id="google-signin-button"></div>
     </div>
   );
