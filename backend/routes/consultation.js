@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Consultation = require('../models/Consultation');
 const mongoose = require("mongoose");
-const auth = require('../middleware/auth'); // Ensure only logged-in users can access
+const auth = require('../middleware/auth'); 
 
-// Book a new consultation
+
 router.post('/book', auth, async (req, res) => {
     try {
         console.log("Request received:", req.body);
@@ -30,10 +30,10 @@ router.post('/book', auth, async (req, res) => {
 
         await consultation.save();
 
-        // ✅ Notify the doctor (Send meeting link via email or notification)
+    
         const doctorUser = await User.findById(doctor);
         if (doctorUser) {
-            console.log(`✅ Doctor Notified: ${doctorUser.email} - Meeting Link: ${meetingLink}`);
+            console.log(`Doctor Notified: ${doctorUser.email} - Meeting Link: ${meetingLink}`);
         }
 
         res.status(201).json({ message: "Consultation booked", consultation });
@@ -43,7 +43,6 @@ router.post('/book', auth, async (req, res) => {
     }
 });
 
-// Get user's consultations
 router.get('/my-consultations', auth, async (req, res) => {
   try {
     const consultations = await Consultation.find({ patient: req.user.id }).populate('doctor', 'name email');
@@ -53,7 +52,7 @@ router.get('/my-consultations', auth, async (req, res) => {
   }
 });
 
-// Get doctor’s scheduled consultations
+
 router.get('/doctor-consultations', auth, async (req, res) => {
     try {
       const consultations = await Consultation.find({ doctor: req.user.id })
