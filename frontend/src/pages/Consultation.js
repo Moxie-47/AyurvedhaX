@@ -3,33 +3,32 @@ import axios from 'axios';
 
 const Consultation = () => {
   const [consultations, setConsultations] = useState([]);
-  const [doctorConsultations, setDoctorConsultations] = useState([]); // ✅ Doctor's scheduled consultations
+  const [doctorConsultations, setDoctorConsultations] = useState([]); 
   const [doctors, setDoctors] = useState([]);
   const [doctorId, setDoctorId] = useState('');
   const [date, setDate] = useState('');
-  const [userRole, setUserRole] = useState(''); // ✅ Check if user is a doctor or patient
+  const [userRole, setUserRole] = useState(''); 
 
   useEffect(() => {
     fetchConsultations();
-    fetchDoctorConsultations(); // ✅ Fetch doctor's meetings
+    fetchDoctorConsultations(); 
     fetchDoctors();
     getUserRole();
   }, []);
 
-  // ✅ Fetch current user's role
+  
   const getUserRole = async () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.get('http://localhost:5000/api/auth/user', {
         headers: { 'x-auth-token': token },
       });
-      setUserRole(res.data.role); // Assuming "role" is stored in user schema
+      setUserRole(res.data.role); 
     } catch (err) {
       console.error("Error fetching user role", err);
     }
   };
 
-  // ✅ Fetch patient's consultations
   const fetchConsultations = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -42,7 +41,6 @@ const Consultation = () => {
     }
   };
 
-  // ✅ Fetch doctor's scheduled consultations
   const fetchDoctorConsultations = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -55,7 +53,6 @@ const Consultation = () => {
     }
   };
 
-  // ✅ Fetch available doctors
   const fetchDoctors = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/doctors');
@@ -65,7 +62,6 @@ const Consultation = () => {
     }
   };
 
-  // ✅ Book a new consultation
   const bookConsultation = async () => {
     if (!doctorId || !date) {
       alert("Please select a doctor and choose a date.");
@@ -82,8 +78,8 @@ const Consultation = () => {
       alert('Consultation booked successfully!');
       setDoctorId('');
       setDate('');
-      fetchConsultations(); // Refresh patient's consultations
-      fetchDoctorConsultations(); // Refresh doctor's consultations
+      fetchConsultations(); 
+      fetchDoctorConsultations();
     } catch (err) {
       console.error("Error booking consultation", err);
       alert("Booking failed. Please try again.");
@@ -94,7 +90,6 @@ const Consultation = () => {
     <div className="p-6">
       <h2 className="text-xl font-bold mb-4">Book a Consultation</h2>
 
-      {/* ✅ Doctor Selection Dropdown */}
       <select value={doctorId} onChange={(e) => setDoctorId(e.target.value)} className="border p-2 mr-2">
         <option value="">Select a Doctor</option>
         {doctors.map((doc) => (
@@ -117,7 +112,6 @@ const Consultation = () => {
         ))}
       </ul>
 
-      {/* ✅ Show Scheduled Consultations for Doctors */}
       {userRole === "doctor" && (
         <>
           <h2 className="text-xl font-bold mt-6 mb-4">Scheduled Consultations</h2>
