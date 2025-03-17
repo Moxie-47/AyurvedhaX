@@ -6,7 +6,7 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("patient"); // ✅ Default role is "patient"
+  const [role, setRole] = useState("patient"); 
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -16,7 +16,7 @@ const Signup = () => {
         name,
         email,
         password,
-        role, // ✅ Send role to backend
+        role, 
       });
 
       localStorage.setItem("token", res.data.token);
@@ -34,7 +34,6 @@ const Signup = () => {
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
-        {/* ✅ Add Role Selection Dropdown */}
         <select value={role} onChange={(e) => setRole(e.target.value)} required>
           <option value="patient">Patient</option>
           <option value="doctor">Doctor</option>
